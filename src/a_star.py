@@ -24,12 +24,13 @@ class AStar:
              goal: Tuple[int, int],
              constraints_on_node: Dict[int, Set[Tuple[int, int]]] = None,
              constraints_on_edge: Dict[int, Dict[Tuple[int, int], Set[Tuple[int, int]]]] = None,
-             other_agents: Dict[int, Set[Tuple[int, int]]] = None,
+             other_agents_on_node: Dict[int, Set[Tuple[int, int]]] = None,
+             other_agents_on_edge: Dict[int, Dict[Tuple[int, int], Set[Tuple[int, int]]]] = None,
              debug: bool = False) -> np.ndarray:
 
-        def is_conflict(obstacle: Dict[int, Set[Tuple[int, int]]],
-                        pos: np.ndarray,
-                        time: int) -> bool:
+        def is_conflict_on_node(obstacle: Dict[int, Set[Tuple[int, int]]],
+                                pos: np.ndarray,
+                                time: int) -> bool:
             pos = tuple(pos)
             return pos in obstacle.setdefault(time, set())
 
@@ -87,15 +88,20 @@ class AStar:
             next_time = current_state.time + 1
 
             for pos_t in self.neighbour_table.neighbours(current_state.pos):
-                # check conflict with other agents
+                # check conflict with other agents on node
                 conflict_num = current_state.conflict_num
-                if other_agents is not None and \
-                        is_conflict(other_agents, pos_t, next_time):
+                if other_agents_on_node is not None and \
+                        is_conflict_on_node(other_agents_on_node, pos_t, next_time):
+                    conflict_num += 1
+
+                # check conflict with other agents on edge
+                if other_agents_on_edge is not None and \
+                        is_conflict_on_edge(constraints_on_edge, pos_f, pos_t, next_time):
                     conflict_num += 1
 
                 # avoid conflict on node
                 if constraints_on_node is not None and \
-                        is_conflict(constraints_on_node, pos_t, next_time):
+                        is_conflict_on_node(constraints_on_node, pos_t, next_time):
                     continue
 
                 # avoid conflict on edge
@@ -128,4 +134,4 @@ class AStar:
 if __name__ == "__main__":
     planner = AStar(5, 10, [(3, 3), (3, 4), (3, 5), (3, 6)])
 
-    print(planner.plan((2, 4), (4, 5), other_agents={3: {(3, 2), (2, 7)}, 4: {(3, 7)}}, debug=False))
+    print(planner.plan((2, 4), (4, 5), constraints_on_node={3: {(3, 2), (2, 7)}, 4: {(3, 7)}}))

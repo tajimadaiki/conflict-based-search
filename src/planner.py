@@ -1,7 +1,6 @@
 from typing import List, Tuple, Dict
 import numpy as np
 import heapq as hq
-from copy import deepcopy
 from agent import Agent
 from constraints import Constraints
 from constraint_tree_node import CTNode
