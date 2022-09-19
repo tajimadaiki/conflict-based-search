@@ -17,7 +17,6 @@ class AStar:
         self.static_obstacles = np.array(static_obstacles)
         self.neighbour_table = NeighbourTable(grid_size_x, grid_size_y, static_obstacles)
         self.heuristic = Heuristic(grid_size_x, grid_size_y, static_obstacles)
-        # TODO: エッジ上の衝突も実装する
 
     def plan(self,
              start: Tuple[int, int],

@@ -21,7 +21,6 @@ class CTNode:
         self.low_level_planner = low_level_planner
         self.starts = starts
         self.goals = goals
-        self.parent_node = None
         self.conflict = tuple()
         self.conflicts_num = int()
         self.search_conflicts()
