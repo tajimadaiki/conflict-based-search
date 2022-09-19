@@ -22,9 +22,9 @@ class AStar:
     def plan(self,
              start: Tuple[int, int],
              goal: Tuple[int, int],
-             constraints: Dict[int, Set[Tuple[int, int]]] = None,
-             other_agents: Dict[int, Set[Tuple[int, int]]] = None,
+             constraints_on_node: Dict[int, Set[Tuple[int, int]]] = None,
              constraints_on_edge: Dict[int, Dict[Tuple[int, int], Set[Tuple[int, int]]]] = None,
+             other_agents: Dict[int, Set[Tuple[int, int]]] = None,
              debug: bool = False) -> np.ndarray:
 
         def is_conflict(obstacle: Dict[int, Set[Tuple[int, int]]],
@@ -32,6 +32,14 @@ class AStar:
                         time: int) -> bool:
             pos = tuple(pos)
             return pos in obstacle.setdefault(time, set())
+
+        def is_conflict_on_edge(obstacle: Dict[int, Dict[Tuple[int, int], Set[Tuple[int, int]]]],
+                                pos_f: np.ndarray,
+                                pos_t: np.ndarray,
+                                time: int) -> bool:
+            pos_f = tuple(pos_f)
+            pos_t = tuple(pos_t)
+            return pos_t in obstacle.setdefault(time, dict()).setdefault(pos_f, set())
 
         def reconstruct_path(goal: State) -> np.ndarray:
             path = []
@@ -62,6 +70,7 @@ class AStar:
         while open_set:
             # get smallest f_value state
             current_state = open_set[0]
+            pos_f = current_state.pos
 
             # get goal
             if current_state.is_same_position(goal):
@@ -77,23 +86,28 @@ class AStar:
             # increment time step
             next_time = current_state.time + 1
 
-            for neighbour in self.neighbour_table.neighbours(current_state.pos):
+            for pos_t in self.neighbour_table.neighbours(current_state.pos):
                 # check conflict with other agents
                 conflict_num = current_state.conflict_num
                 if other_agents is not None and \
-                        is_conflict(other_agents, neighbour, next_time):
+                        is_conflict(other_agents, pos_t, next_time):
                     conflict_num += 1
 
-                # avoid constrain
-                if constraints is not None and \
-                        is_conflict(constraints, neighbour, next_time):
+                # avoid conflict on node
+                if constraints_on_node is not None and \
+                        is_conflict(constraints_on_node, pos_t, next_time):
+                    continue
+
+                # avoid conflict on edge
+                if constraints_on_edge is not None and \
+                        is_conflict_on_edge(constraints_on_edge, pos_f, pos_t, next_time):
                     continue
 
                 # create neighbour state
-                neighbour_state = State(neighbour,
+                neighbour_state = State(pos_t,
                                         next_time,
                                         current_state.g_value + 1,
-                                        self.heuristic.single_shortest_path(neighbour, goal),
+                                        self.heuristic.single_shortest_path(pos_t, goal),
                                         conflict_num)
 
                 # check if visited
@@ -113,4 +127,5 @@ class AStar:
 
 if __name__ == "__main__":
     planner = AStar(5, 10, [(3, 3), (3, 4), (3, 5), (3, 6)])
+
     print(planner.plan((2, 4), (4, 5), other_agents={3: {(3, 2), (2, 7)}, 4: {(3, 7)}}, debug=False))

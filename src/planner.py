@@ -29,11 +29,16 @@ class Planner:
             path = self.low_level_planner.plan(starts[agent], goals[agent])
             solution[agent] = path
         constraints = Constraints()
-        node = CTNode(constraints, solution)
+        node = CTNode(constraints,
+                      solution,
+                      self.low_level_planner,
+                      starts,
+                      goals)
 
         open_nodes = [node]
         hq.heapify(open_nodes)
 
+        # start iteration
         while open_nodes:
             current_node = hq.heappop(open_nodes)
             if debug:
@@ -42,24 +47,9 @@ class Planner:
             if current_node.conflicts_num == 0:
                 return current_node.solution
 
-            agent_i, agent_j, pos, time = current_node.conflict
-
-            # create CT node
-            def create_child_node(agent_x: Agent):
-                constraints_x = current_node.constraints.fork(agent_x, time, tuple(pos))
-
-                # TODO 他のロボットの動き(dynamic_obstacle)を入力してa_starの中でタイブレークできるようにする
-                path_x = self.low_level_planner.plan(starts[agent_x],
-                                                     goals[agent_x],
-                                                     constraints=constraints_x.constraints[agent_x])
-                solution_x = deepcopy(current_node.solution)
-                solution_x[agent_x] = path_x
-                node_x = CTNode(constraints_x, solution_x)
-                # add open_ct_nodes
-                hq.heappush(open_nodes, node_x)
-
-            create_child_node(agent_i)
-            create_child_node(agent_j)
+            child_node_r, child_node_l = current_node.create_child_nodes()
+            hq.heappush(open_nodes, child_node_r)
+            hq.heappush(open_nodes, child_node_l)
 
 
 if __name__ == "__main__":
@@ -72,8 +62,8 @@ if __name__ == "__main__":
     planner = Planner(agents, grid_size_x, grid_size_y, static_obstacles)
     print("create planner!")
 
-    starts = {agents[0]: (0, 1), agents[1]: (1, 0), agents[2]: (2, 4)}
-    goals = {agents[0]: (4, 1), agents[1]: (1, 4), agents[2]: (2, 0)}
+    starts = {agents[0]: (0, 1), agents[1]: (3, 1), agents[2]: (2, 4)}
+    goals = {agents[0]: (3, 1), agents[1]: (0, 1), agents[2]: (2, 0)}
 
     solution = planner.plan(starts, goals, True)
 
