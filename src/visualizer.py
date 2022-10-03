@@ -65,16 +65,22 @@ class Visualizer:
             for obstacle in self.static_obstacles:
                 x = obstacle[0] - 0.5
                 y = obstacle[1] - 0.5
-                r = patches.Rectangle( xy=(x, y) , width=1, height=1, color="black")
+                r = patches.Rectangle(xy=(x, y), width=1, height=1, color="black")
                 ax.add_patch(r)
             # plot agents
             for agent, pos in self.traject.items():
                 # plot agents
                 if f < len(pos):
                     c = patches.Circle(xy=(pos[f][0], pos[f][1]), radius=0.3, color="blue")
+                    cg = patches.Circle(xy=(pos[-1][0], pos[-1][1]), radius=0.3, color="green", alpha=0.4)
+                    ax.text(pos[f][0], pos[f][1], str(agent.id), va="center", ha="center", fontsize=8, color="white")
+                    ax.text(pos[-1][0], pos[-1][1], str(agent.id), va="center", ha="center", fontsize=8, color="white")
+                    ax.add_patch(c)
+                    ax.add_patch(cg)
                 else:
                     c = patches.Circle(xy=(pos[-1][0], pos[-1][1]), radius=0.3, color="red")
-                ax.add_patch(c)
+                    ax.text(pos[-1][0], pos[-1][1], str(agent.id), va="center", ha="center", fontsize=8, color="white")
+                    ax.add_patch(c)
         interval_time = 1000/self.step_div
         anim = FuncAnimation(fig, plot_one_step, frames=self.traj_steps, interval=interval_time)
         if save:
