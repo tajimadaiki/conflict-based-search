@@ -14,7 +14,7 @@ class Visualizer:
                  grid_size_y: int,
                  static_obstacles: List[Tuple[int, int]],
                  solution: Dict[Agent, np.ndarray],
-                 step_div = 10):
+                 step_div=10):
         self.grid_size_x = grid_size_x
         self.grid_size_y = grid_size_y
         self.static_obstacles = static_obstacles
@@ -29,7 +29,7 @@ class Visualizer:
     def _set_steps(self):
         for path in self.solution.values():
             self.path_steps = max(self.path_steps, len(path))
-        self.traj_steps = int(self.path_steps*self.step_div + 1)
+        self.traj_steps = int(self.path_steps * self.step_div + 1)
 
     def _make_traject(self):
         for agent, path in self.solution.items():
@@ -46,7 +46,7 @@ class Visualizer:
                     traj_y = np.delete(traj_y, len(traj_y) - 1)
             self.traject[agent] = np.stack([traj_x, traj_y], 1)
 
-    def plot(self, save = False):
+    def plot(self, save=False):
         fig = plt.figure()
         ax = fig.add_subplot(111, aspect=1)
 
@@ -57,10 +57,10 @@ class Visualizer:
             ax.set_xlim(-1, self.grid_size_x)
             ax.set_ylim(-1, self.grid_size_y)
             # set grid
-            for x in range(self.grid_size_x+1):
-                ax.plot([x-0.5, x-0.5], [0-0.5, self.grid_size_y-0.5], color="black")
-            for y in range(self.grid_size_y+1):
-                ax.plot([0-0.5, self.grid_size_x-0.5], [y-0.5, y-0.5], color="black")
+            for x in range(self.grid_size_x + 1):
+                ax.plot([x - 0.5, x - 0.5], [0 - 0.5, self.grid_size_y - 0.5], color="black")
+            for y in range(self.grid_size_y + 1):
+                ax.plot([0 - 0.5, self.grid_size_x - 0.5], [y - 0.5, y - 0.5], color="black")
 
             # plot agents
             for agent, pos in self.traject.items():
@@ -70,8 +70,8 @@ class Visualizer:
                 else:
                     c = patches.Circle(xy=(pos[-1][0], pos[-1][1]), radius=0.3, color="red")
                 ax.add_patch(c)
-
-        anim = FuncAnimation(fig, plot_one_step, frames=self.traj_steps, interval=100)
+        interval_time = 1000/self.step_div
+        anim = FuncAnimation(fig, plot_one_step, frames=self.traj_steps, interval=interval_time)
         if save:
             anim.save('anim.mp4', writer="ffmpeg")
         plt.show()
@@ -80,7 +80,7 @@ class Visualizer:
 if __name__ == '__main__':
     agent_1 = Agent(1)
     agent_2 = Agent(2)
-    grid_size_x = 10
+    grid_size_x = 15
     grid_size_y = 10
     static_obstacles = [(5, 5), (5, 6), (5, 7), (5, 8), (5, 9)]
     path_1 = np.array([[1, 2], [2, 2], [3, 2], [3, 3]])
