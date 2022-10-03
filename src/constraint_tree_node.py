@@ -55,6 +55,8 @@ class CTNode:
                                                      =constraints_x.constraints_on_node.setdefault(agent_x, dict()),
                                                      constraints_on_edge
                                                      =constraints_x.constraints_on_edge.setdefault(agent_x, dict()))
+                if len(path_x) <= time_x:
+                    return None
                 solution_x = deepcopy(self.solution)
                 solution_x[agent_x] = path_x
                 node_x = CTNode(constraints_x,

@@ -42,13 +42,20 @@ class Planner:
             current_node = hq.heappop(open_nodes)
             if debug:
                 print(f'conflict:{current_node.conflict}, num:{current_node.conflicts_num}')
+                if current_node.conflicts_num != 0:
+                    agent_r = current_node.conflict[0]
+                    agent_l = current_node.conflict[1]
+                    print(f'agent_r: {len(current_node.solution[agent_r])}, agent_l: {len(current_node.solution[agent_l])}')
+
             # get goal
             if current_node.conflicts_num == 0:
                 return current_node.solution
 
             child_node_r, child_node_l = current_node.create_child_nodes()
-            hq.heappush(open_nodes, child_node_r)
-            hq.heappush(open_nodes, child_node_l)
+            if child_node_r is not None:
+                hq.heappush(open_nodes, child_node_r)
+            if child_node_l is not None:
+                hq.heappush(open_nodes, child_node_l)
 
 
 if __name__ == "__main__":

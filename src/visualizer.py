@@ -61,7 +61,12 @@ class Visualizer:
                 ax.plot([x - 0.5, x - 0.5], [0 - 0.5, self.grid_size_y - 0.5], color="black")
             for y in range(self.grid_size_y + 1):
                 ax.plot([0 - 0.5, self.grid_size_x - 0.5], [y - 0.5, y - 0.5], color="black")
-
+            # plot static obstacle
+            for obstacle in self.static_obstacles:
+                x = obstacle[0] - 0.5
+                y = obstacle[1] - 0.5
+                r = patches.Rectangle( xy=(x, y) , width=1, height=1, color="black")
+                ax.add_patch(r)
             # plot agents
             for agent, pos in self.traject.items():
                 # plot agents
