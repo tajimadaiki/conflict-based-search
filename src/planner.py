@@ -5,6 +5,7 @@ from agent import Agent
 from constraints import Constraints
 from constraint_tree_node import CTNode
 from a_star import AStar
+import time
 
 
 class Planner:
@@ -37,8 +38,14 @@ class Planner:
         open_nodes = [node]
         hq.heapify(open_nodes)
 
+        start_time = time.time()
         # start iteration
         while open_nodes:
+            current_time = time.time()
+            if current_time - start_time > 10:
+                print("Not found!")
+                print(starts, goals)
+                return None
             current_node = hq.heappop(open_nodes)
             if debug:
                 print(f'conflict:{current_node.conflict}, num:{current_node.conflicts_num}')

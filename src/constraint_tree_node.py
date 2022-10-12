@@ -107,7 +107,7 @@ class CTNode:
         # set find conflict flag
         found_conflict = False
         # set max iter number
-        max_iter = 500
+        max_iter = 1000
         # start iteration
         time = 0
         while not all(has_arrived.values()) and time < max_iter:
@@ -127,8 +127,16 @@ class CTNode:
                     just_arrived[agent_j] = False
 
                 # find conflict
-                pos_i = self.solution[agent_i][time] if not has_arrived[agent_i] else self.solution[agent_i][-1]
-                pos_j = self.solution[agent_j][time] if not has_arrived[agent_j] else self.solution[agent_j][-1]
+                if not has_arrived[agent_i]:
+                    pos_i = self.solution[agent_i][time]
+                else:
+                    pos_i = self.solution[agent_i][-1]
+                if not has_arrived[agent_j]:
+                    pos_j = self.solution[agent_j][time]
+                else:
+                    pos_j = self.solution[agent_j][-1]
+                # pos_i = self.solution[agent_i][time] if not has_arrived[agent_i] else self.solution[agent_i][-1]
+                # pos_j = self.solution[agent_j][time] if not has_arrived[agent_j] else self.solution[agent_j][-1]
                 pre_pos_i = self.solution[agent_i][time - 1] \
                     if not has_arrived[agent_i] or just_arrived[agent_i] \
                     else self.solution[agent_i][-1]
