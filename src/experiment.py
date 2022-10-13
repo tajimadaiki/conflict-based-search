@@ -2,10 +2,11 @@ import time
 from typing import Dict, List, Tuple
 from agent import Agent
 from planner import Planner
-from visualizer import Visualizer
+import numpy as np
 import random
 import map_reader
 import copy
+import matplotlib.pyplot as plt
 
 
 def main():
@@ -19,6 +20,7 @@ def main():
     trials_num = 50
     successes_num = 0
     sum_of_exe_time = 0
+    exe_times = []
     for _ in range(trials_num):
         start_time = time.time()
         starts = {}
@@ -45,12 +47,28 @@ def main():
             successes_num += 1
             exe_time = end_time - start_time
             sum_of_exe_time += exe_time
+            exe_times.append(exe_time)
             print(f"calculate solution: {exe_time}")
 
     exe_time_average = sum_of_exe_time/successes_num
     print(f"{exe_time_average} sec")
     successes_ratio = successes_num/trials_num*100
     print(f"{successes_ratio}%")
+    plot_hist(exe_times, save_fig=True, agent_num=agent_num, trials_num=trials_num)
+
+
+def plot_hist(data: List, save_fig: bool = False, agent_num: int = 0, trials_num: int = 0):
+    np_data = np.array(data)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
+    ax.hist(np_data, bins=50, range=(0, 10), color='blue', ec='black')
+    ax.set_title(f'Execution time (agent:{agent_num})')
+    ax.set_xlabel('time')
+    if save_fig:
+        plt.savefig(f"./fig/exe_time_{agent_num}agents_{trials_num}trials.png")
+    plt.show()
 
 
 if __name__ == "__main__":

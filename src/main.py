@@ -11,7 +11,7 @@ def main():
     start_time = time.time()
     grid_size_x, grid_size_y, static_obstacles, end_points = map_reader.load_file('./map/kvc.map')
 
-    agent_num = 8
+    agent_num = 5
     agents = [Agent(i) for i in range(agent_num)]
     planner = Planner(agents, grid_size_x, grid_size_y, static_obstacles)
     intermediate_time = time.time()
