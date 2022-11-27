@@ -1,2 +1,2 @@
-# CBS-MAPF
-Multi-Agent Path Finding (MAPF) with Conflict-Based Search (CBS) 
+# conflict-based-search
+This is an implementation　of Conflict Based Search (CBS) 
