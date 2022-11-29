@@ -5,9 +5,6 @@ import openpyxl
 
 class NeighbourTable:
 
-    directions_k2 = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]
-    directions_k3 = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
-
     def __init__(self,
                  excel_map_file):
         # load map file
@@ -24,10 +21,10 @@ class NeighbourTable:
                 else:
                     directions.append((0, 0))
                     for c in value[1:]:
-                        if c == 'r': directions.append((-1, 0))
-                        if c == 'u': directions.append((0, -1))
-                        if c == 'l': directions.append((1, 0))
-                        if c == 'd': directions.append((0, 1))
+                        if c == 'r': directions.append((0, -1))
+                        if c == 'u': directions.append((-1, 0))
+                        if c == 'l': directions.append((0, 1))
+                        if c == 'd': directions.append((1, 0))
                 
                 for dx, dy in directions:
                     nx = x+ dx
@@ -39,6 +36,11 @@ class NeighbourTable:
 
     def neighbours(self, pos: np.ndarray) -> np.ndarray:
         return self.table[tuple(pos)]
+    
+    def is_obstacle(self, pos: np.ndarray) -> bool:
+        x = pos[0]
+        y = pos[1]
+        return self.map[x][y] == '@'
 
     def load_excel_map(self, map_file):
         wb = openpyxl.load_workbook(map_file)
@@ -58,6 +60,8 @@ if __name__ == "__main__":
     max_x = neighbour.grid_size_x - 1
     max_y = neighbour.grid_size_y - 1
     print(max_x, max_y)
-    print(len(neighbour.map))
-    pos = np.array([4, 16])
-    print(neighbour.neighbours(pos))
+    print(neighbour.map[12][4])
+    pos1 = np.array([12, 4])
+    pos2 = np.array([4, 3])
+    print(neighbour.neighbours(pos1))
+    print(neighbour.is_obstacle(pos2))

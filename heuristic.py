@@ -6,13 +6,10 @@ from neighbour_table import NeighbourTable
 class Heuristic:
 
     def __init__(self,
-                 grid_size_x: int,
-                 grid_size_y: int,
-                 static_obstacles: List[Tuple[int, int]]):
-        self.grid_size_x = grid_size_x
-        self.grid_size_y = grid_size_y
-        self.static_obstacles = static_obstacles
-        self.neighbour_table = NeighbourTable(grid_size_x, grid_size_y, static_obstacles)
+                 map_file: str):
+        self.neighbour_table = NeighbourTable(map_file)
+        self.grid_size_x = self.neighbour_table.grid_size_x
+        self.grid_size_y = self.neighbour_table.grid_size_y
         self.shortest_distance = self._warshall_floyd()
 
     @staticmethod
@@ -37,6 +34,10 @@ class Heuristic:
             i = id_ // self.grid_size_y
             j = id_ % self.grid_size_y
             return np.array([i, j])
+        
+        def is_obstacle(id_: int) -> bool:
+            pos = inverter(id_)
+            return self.neighbour_table.is_obstacle(pos)
 
         inf = 1001001001
         node_num = self.grid_size_x * self.grid_size_y
@@ -54,11 +55,15 @@ class Heuristic:
                     distance[node_id][n_node_id] = 1
         # calculate warshall_floyd
         for k in range(node_num):
+            if is_obstacle(k): continue
             for i in range(node_num):
+                if is_obstacle(i): continue
                 for j in range(node_num):
+                    if is_obstacle(j): continue
                     distance[i][j] = min([distance[i][j], distance[i][k] + distance[k][j]])
 
         shortest_distance = np.full((self.grid_size_x, self.grid_size_y, self.grid_size_x, self.grid_size_y), inf)
+        print(distance)
 
         for i in range(node_num):
             for j in range(node_num):
@@ -70,6 +75,7 @@ class Heuristic:
 
 
 if __name__ == "__main__":
-    h = Heuristic(5, 10, [(3, 3), (3, 4), (3, 5), (3, 6)])
-    print(h.single_shortest_path(np.array([2, 4]), np.array([4, 5])))
+    h = Heuristic("./map/map.xlsx")
+    print(h.neighbour_table.map[11][0], h.neighbour_table.map[12][4])
+    print(h.single_shortest_path(np.array([11, 0]), np.array([12, 4])))
 
