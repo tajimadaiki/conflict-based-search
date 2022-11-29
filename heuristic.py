@@ -10,7 +10,7 @@ class Heuristic:
         self.neighbour_table = NeighbourTable(map_file)
         self.grid_size_x = self.neighbour_table.grid_size_x
         self.grid_size_y = self.neighbour_table.grid_size_y
-        self.shortest_distance = self._warshall_floyd()
+        self._warshall_floyd()
 
     @staticmethod
     def manhattan(current: np.ndarray, goal: np.ndarray) -> int:
@@ -44,6 +44,7 @@ class Heuristic:
         distance = np.full((node_num, node_num), inf)
         # set 0
         for i in range(node_num):
+            if is_obstacle(i): continue
             distance[i][i] = 0
         # set neighbour
         for i in range(self.grid_size_x):
@@ -62,20 +63,19 @@ class Heuristic:
                     if is_obstacle(j): continue
                     distance[i][j] = min([distance[i][j], distance[i][k] + distance[k][j]])
 
-        shortest_distance = np.full((self.grid_size_x, self.grid_size_y, self.grid_size_x, self.grid_size_y), inf)
+        self.shortest_distance = np.full((self.grid_size_x, self.grid_size_y, self.grid_size_x, self.grid_size_y), inf)
         print(distance)
 
         for i in range(node_num):
             for j in range(node_num):
                 i_pos = inverter(i)
                 j_pos = inverter(j)
-                shortest_distance[i_pos[0]][i_pos[1]][j_pos[0]][j_pos[1]] = distance[i][j]
-
-        return shortest_distance
+                self.shortest_distance[i_pos[0]][i_pos[1]][j_pos[0]][j_pos[1]] = distance[i][j]
 
 
 if __name__ == "__main__":
     h = Heuristic("./map/map.xlsx")
     print(h.neighbour_table.map[11][0], h.neighbour_table.map[12][4])
     print(h.single_shortest_path(np.array([11, 0]), np.array([12, 4])))
+    print(h.single_shortest_path(np.array([24, 35]), np.array([24, 35])))
 

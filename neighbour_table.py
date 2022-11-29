@@ -61,7 +61,7 @@ if __name__ == "__main__":
     max_y = neighbour.grid_size_y - 1
     print(max_x, max_y)
     print(neighbour.map[12][4])
-    pos1 = np.array([12, 4])
+    pos1 = np.array([24, 35])
     pos2 = np.array([4, 3])
     print(neighbour.neighbours(pos1))
     print(neighbour.is_obstacle(pos2))
