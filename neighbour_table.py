@@ -6,7 +6,7 @@ import openpyxl
 class NeighbourTable:
 
     def __init__(self,
-                 excel_map_file):
+                 excel_map_file: str):
         # load map file
         self.load_excel_map(excel_map_file)
         # create neighbours table
