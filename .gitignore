@@ -2,3 +2,4 @@ __pycache__/
 fig/
 .DS_Store
 ./idea
+*.xlsx
