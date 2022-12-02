@@ -1,6 +1,6 @@
 import time
 from agent import Agent
-from cbs import Planner
+from conflict_based_search import ConflictBasedSearch
 from visualizer import Visualizer
 import random
 
@@ -11,7 +11,7 @@ def main():
     agent_num = 3
     agents = [Agent(i) for i in range(agent_num)]
     excel_map_file = "./map/map.xlsx"
-    planner = Planner(agents, excel_map_file)
+    planner = ConflictBasedSearch(agents, excel_map_file)
     intermediate_time = time.time()
     print(f"create planner: {intermediate_time - start_time}")
 

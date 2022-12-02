@@ -8,7 +8,7 @@ from a_star import AStar
 import time
 
 
-class Planner:
+class ConflictBasedSearch:
 
     def __init__(self,
                  agents: List[Agent],
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     agents = [Agent(i) for i in range(agent_num)]
     excel_map_file = "./map/map.xlsx"
 
-    planner = Planner(agents, excel_map_file)
+    planner = ConflictBasedSearch(agents, excel_map_file)
     print("create planner!")
 
     starts = {agents[0]: (11, 0), agents[1]: (17, 4), agents[2]: (17, 4)}
