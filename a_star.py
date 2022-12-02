@@ -9,12 +9,12 @@ from heuristic import Heuristic
 class AStar:
 
     def __init__(self,
-                 excel_map_file: str):
-        self.neighbour_table = NeighbourTable(excel_map_file)
-        self.grid_size_x = self.neighbour_table.grid_size_x
-        self.grid_size_y = self.neighbour_table.grid_size_y
+                 map_data:  List[List[str]]):
+        self.neighbour_table = NeighbourTable(map_data)
+        self.grid_size_x = len(map_data)
+        self.grid_size_y = len(map_data[0])
         
-        self.heuristic = Heuristic(excel_map_file)
+        self.heuristic = Heuristic(map_data)
 
     def plan(self,
              start: Tuple[int, int],
@@ -129,5 +129,8 @@ class AStar:
 
 
 if __name__ == "__main__":
-    planner = AStar("./config/config.xlsx")
+    from config_file_loader import ConfigFileLoader
+    config_file = "./config/config.xlsx"
+    config = ConfigFileLoader(config_file)
+    planner = AStar(config.map)
     print(planner.plan((11, 0), (12, 4), constraints_on_node={3: {(3, 2), (2, 7)}, 4: {(3, 7)}}))
