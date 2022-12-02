@@ -5,7 +5,7 @@ from typing import Dict
 class NeighbourTable:
 
     def __init__(self,
-                 map_data:  List[List[str]]):
+                 map_data: List[List[str]]):
         # load map file
         self.map = map_data
         grid_size_x = len(map_data)

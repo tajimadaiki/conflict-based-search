@@ -6,7 +6,7 @@ from neighbour_table import NeighbourTable
 class Heuristic:
 
     def __init__(self,
-                 map_data:  List[List[str]]):
+                 map_data: List[List[str]]):
         self.neighbour_table = NeighbourTable(map_data)
         self.grid_size_x = len(map_data)
         self.grid_size_y = len(map_data[0])
