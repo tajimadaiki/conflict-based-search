@@ -5,19 +5,16 @@ import math
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
 import matplotlib.patches as patches
+import openpyxl
 
 
 class Visualizer:
 
     def __init__(self,
-                 grid_size_x: int,
-                 grid_size_y: int,
-                 static_obstacles: List[Tuple[int, int]],
+                 excel_map_file: str,
                  solution: Dict[Agent, np.ndarray],
                  step_div=10):
-        self.grid_size_x = grid_size_x
-        self.grid_size_y = grid_size_y
-        self.static_obstacles = static_obstacles
+        self.load_excel_map(excel_map_file)
         self.solution = solution
         self.traject: Dict[Agent, np.ndarray] = dict()
         self.step_div = step_div
@@ -25,6 +22,19 @@ class Visualizer:
         self.traj_steps = 0
         self._make_traject()
         self._set_steps()
+    
+    def load_excel_map(self, excel_map_file):
+        wb = openpyxl.load_workbook(excel_map_file)
+        map_sh = wb['map']
+        self.grid_size_x = map_sh.max_row
+        self.grid_size_y = map_sh.max_column
+        self.static_obstacles = []
+        for row in range(1, map_sh.max_row + 1):
+            for col in range(1, map_sh.max_column + 1):
+                if map_sh.cell(row, col).value == '@':
+                    x = row - 1
+                    y = col - 1
+                    self.static_obstacles.append([x, y])
 
     def _set_steps(self):
         for path in self.solution.values():
@@ -89,14 +99,12 @@ class Visualizer:
 if __name__ == '__main__':
     agent_1 = Agent(1)
     agent_2 = Agent(2)
-    grid_size_x = 15
-    grid_size_y = 10
-    static_obstacles = [(5, 5), (5, 6), (5, 7), (5, 8), (5, 9)]
+    excel_map_file = "./map/map.xlsx"
     path_1 = np.array([[1, 2], [2, 2], [3, 2], [3, 3]])
     path_2 = np.array([[2, 2], [2, 3], [3, 3], [4, 3], [5, 3]])
     solution = {agent_1: path_1, agent_2: path_2}
 
-    visualizer = Visualizer(grid_size_x, grid_size_y, static_obstacles, solution)
+    visualizer = Visualizer(excel_map_file, solution)
     print(visualizer.traject)
     visualizer.plot()
 
