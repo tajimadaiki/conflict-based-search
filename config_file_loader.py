@@ -27,7 +27,13 @@ class ConfigFileLoader:
         for row in range(1, map_ws.max_row + 1):
             map_row = []
             for col in range(1, map_ws.max_column + 1):
+                # record map
                 map_row.append(map_ws.cell(row, col).value)
+                # record static obstacle
+                if map_ws.cell(row, col).value == '@':
+                    x = row - 1
+                    y = col - 1
+                    self.static_obstacles.append([x, y])
             self.map.append(map_row)
 
 
