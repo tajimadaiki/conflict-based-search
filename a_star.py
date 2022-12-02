@@ -129,5 +129,5 @@ class AStar:
 
 
 if __name__ == "__main__":
-    planner = AStar("./map/map.xlsx")
+    planner = AStar("./config/config.xlsx")
     print(planner.plan((11, 0), (12, 4), constraints_on_node={3: {(3, 2), (2, 7)}, 4: {(3, 7)}}))

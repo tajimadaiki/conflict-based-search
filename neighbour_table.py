@@ -55,7 +55,7 @@ class NeighbourTable:
             self.map.append(map_row)
 
 if __name__ == "__main__":
-    map_file = "./map/map.xlsx"
+    map_file = "./config/config.xlsx"
     neighbour = NeighbourTable(map_file)
     max_x = neighbour.grid_size_x - 1
     max_y = neighbour.grid_size_y - 1

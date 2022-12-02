@@ -10,7 +10,7 @@ def main():
 
     agent_num = 3
     agents = [Agent(i) for i in range(agent_num)]
-    excel_map_file = "./map/map.xlsx"
+    excel_map_file = "./config/config.xlsx"
     planner = ConflictBasedSearch(agents, excel_map_file)
     intermediate_time = time.time()
     print(f"create planner: {intermediate_time - start_time}")

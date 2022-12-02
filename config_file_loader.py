@@ -19,5 +19,5 @@ class ConfigFileLoader:
 
 
 if __name__ == "__main__":
-    map_file = "./map/map.xlsx"
+    map_file = "./config/config.xlsx"
     config = ConfigFileLoader(map_file)
