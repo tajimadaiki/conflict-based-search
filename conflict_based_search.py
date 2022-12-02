@@ -12,9 +12,9 @@ class ConflictBasedSearch:
 
     def __init__(self,
                  agents: List[Agent],
-                 excel_map_file: str):
+                 map_data:  List[List[str]]):
         self.agents = agents
-        self.low_level_planner = AStar(excel_map_file)
+        self.low_level_planner = AStar(map_data)
 
     def plan(self,
              starts: Dict[Agent, Tuple[int, int]],
@@ -63,15 +63,15 @@ class ConflictBasedSearch:
 
 
 if __name__ == "__main__":
-    agent_num = 3
-    agents = [Agent(str(i)) for i in range(agent_num)]
-    excel_map_file = "./config/config.xlsx"
+    from config_file_loader import ConfigFileLoader
+    config_file = "./config/config.xlsx"
+    config = ConfigFileLoader(config_file)
 
-    planner = ConflictBasedSearch(agents, excel_map_file)
+    planner = ConflictBasedSearch(config.agents, config.map)
     print("create planner!")
 
-    starts = {agents[0]: (11, 0), agents[1]: (17, 4), agents[2]: (17, 4)}
-    goals = {agents[0]: (16, 4), agents[1]: (17, 6), agents[2]: (11, 1)}
+    starts = {config.agents[0]: (11, 0), config.agents[1]: (17, 4)}
+    goals = {config.agents[0]: (16, 4), config.agents[1]: (17, 6)}
 
     solution = planner.plan(starts, goals, True)
 
