@@ -15,7 +15,7 @@ def main():
     intermediate_time = time.time()
     print(f"create planner: {intermediate_time - start_time}")
 
-    starts = {agents[0]: (11, 0), agents[1]: (17, 4), agents[2]: (17, 4)}
+    starts = {agents[0]: (11, 0), agents[1]: (17, 4), agents[2]: (17, 5)}
     goals = {agents[0]: (16, 4), agents[1]: (17, 6), agents[2]: (11, 1)}
     print(starts, goals)
 
