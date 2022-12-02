@@ -64,7 +64,7 @@ class ConflictBasedSearch:
 
 if __name__ == "__main__":
     agent_num = 3
-    agents = [Agent(i) for i in range(agent_num)]
+    agents = [Agent(str(i)) for i in range(agent_num)]
     excel_map_file = "./config/config.xlsx"
 
     planner = ConflictBasedSearch(agents, excel_map_file)
