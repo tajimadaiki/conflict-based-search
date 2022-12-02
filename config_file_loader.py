@@ -22,6 +22,8 @@ class ConfigFileLoader:
 
     def _load_map(self):
         map_ws = self._wb['map']
+        self.grid_size_x = map_ws.max_row
+        self.grid_size_y = map_ws.max_column
         for row in range(1, map_ws.max_row + 1):
             map_row = []
             for col in range(1, map_ws.max_column + 1):
