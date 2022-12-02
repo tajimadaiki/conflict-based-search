@@ -8,7 +8,7 @@ class ConfigFileLoader:
         self._wb = openpyxl.load_workbook(config_file)
         self.agents: List[Agent] = []
         self.map: List[List[str]] = []
-        self.static_obstacles = dict()
+        self.static_obstacles = []
         self.endpoints = dict()
         self.chargers = dict()
         self._load_agent()
@@ -38,7 +38,7 @@ class ConfigFileLoader:
                 name = name_ws.cell(row, col).value
                 # record static obstacles
                 if map_ws.cell(row, col).value == '@':
-                    self.static_obstacles[name] = [x, y]
+                    self.static_obstacles.append([x, y])
                 # record endpoints
                 if map_ws.cell(row, col).value[0] == 'e':
                     self.endpoints[name] = [x, y]
