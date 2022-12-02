@@ -5,11 +5,11 @@ from typing import Dict
 class NeighbourTable:
 
     def __init__(self,
-                 map_data:  List[List[str]],
-                 grid_size_x: int,
-                 grid_size_y: int):
+                 map_data:  List[List[str]]):
         # load map file
         self.map = map_data
+        grid_size_x = len(map_data)
+        grid_size_y = len(map_data[0])
         # create neighbours table
         self.neighbours_table: Dict[Tuple[int,int]: str] = dict()
         for x in range(grid_size_x):
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     from config_file_loader import ConfigFileLoader
     config_file = "./config/config.xlsx"
     config = ConfigFileLoader(config_file)
-    neighbour_table = NeighbourTable(config.map, config.grid_size_x, config.grid_size_y)
+    neighbour_table = NeighbourTable(config.map)
     print(neighbour_table.map[12][4])
     pos1 = np.array([24, 35])
     pos2 = np.array([4, 3])
