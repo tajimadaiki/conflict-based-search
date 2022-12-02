@@ -32,6 +32,6 @@ class ConfigFileLoader:
 
 
 if __name__ == "__main__":
-    map_file = "./config/config.xlsx"
-    config = ConfigFileLoader(map_file)
+    config_file = "./config/config.xlsx"
+    config = ConfigFileLoader(config_file)
     print(config.agents)

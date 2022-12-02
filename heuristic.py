@@ -6,10 +6,12 @@ from neighbour_table import NeighbourTable
 class Heuristic:
 
     def __init__(self,
-                 excel_map_file: str):
-        self.neighbour_table = NeighbourTable(excel_map_file)
-        self.grid_size_x = self.neighbour_table.grid_size_x
-        self.grid_size_y = self.neighbour_table.grid_size_y
+                 map_data:  List[List[str]],
+                 grid_size_x: int,
+                 grid_size_y: int):
+        self.neighbour_table = NeighbourTable(map_data, grid_size_x, grid_size_y)
+        self.grid_size_x = grid_size_x
+        self.grid_size_y = grid_size_y
         self._warshall_floyd()
 
     @staticmethod
@@ -67,7 +69,10 @@ class Heuristic:
 
 
 if __name__ == "__main__":
-    h = Heuristic("./map/map.xlsx")
+    from config_file_loader import ConfigFileLoader
+    config_file = "./config/config.xlsx"
+    config = ConfigFileLoader(config_file)
+    h = Heuristic(config.map, config.grid_size_x, config.grid_size_y)
     print(h.neighbour_table.map[11][0], h.neighbour_table.map[12][4])
     print(h.single_shortest_path(np.array([11, 0]), np.array([12, 4])))
     print(h.single_shortest_path(np.array([24, 35]), np.array([24, 35])))
