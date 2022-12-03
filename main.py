@@ -17,7 +17,8 @@ def main():
 
     starts = {config.agents[0]: (11, 0), config.agents[1]: (17, 4)}
     goals = {config.agents[0]: (16, 4), config.agents[1]: (17, 6)}
-    print(starts, goals)
+    print(f'starts: {starts}')
+    print(f'goals: {goals}')
 
     solution = planner.plan(starts, goals)
 
