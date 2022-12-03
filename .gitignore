@@ -1,6 +1,6 @@
 __pycache__/
 fig/
 .DS_Store
-./idea
+.idea/
 ./config/
 *.xlsx
