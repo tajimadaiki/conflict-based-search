@@ -5,16 +5,16 @@ from agent import Agent
 from constraints import Constraints
 from constraint_tree_node import CTNode
 from a_star import AStar
+from config import Config
 import time
 
 
 class ConflictBasedSearch:
 
     def __init__(self,
-                 agents: List[Agent],
-                 map_data:  List[List[str]]):
-        self.agents = agents
-        self.low_level_planner = AStar(map_data)
+                 config: Config):
+        self.agents = config.agents
+        self.low_level_planner = AStar(config.map)
 
     def plan(self,
              starts: Dict[Agent, Tuple[int, int]],
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     config_file = "./config/config.xlsx"
     config = Config(config_file)
 
-    planner = ConflictBasedSearch(config.agents, config.map)
+    planner = ConflictBasedSearch(config)
     print("create planner!")
 
     starts = {config.agents[0]: (11, 0), config.agents[1]: (17, 4)}

@@ -11,7 +11,7 @@ def main():
     config_file = "./config/config.xlsx"
     config = Config(config_file)
 
-    planner = ConflictBasedSearch(config.agents, config.map)
+    planner = ConflictBasedSearch(config)
     intermediate_time = time.time()
     print(f"create planner: {intermediate_time - start_time}")
 
