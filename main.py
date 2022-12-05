@@ -26,7 +26,7 @@ def main():
     end_time = time.time()
     print(f"calculate solution: {end_time - intermediate_time}")
 
-    visualizer = Visualizer(config.map, solution)
+    visualizer = Visualizer(config, solution)
     visualizer.plot()
 
 

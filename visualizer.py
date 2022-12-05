@@ -1,26 +1,21 @@
 from typing import Dict, List, Tuple
 from agent import Agent
+from config import Config
 import numpy as np
-import math
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
 import matplotlib.patches as patches
-import openpyxl
 
 
 class Visualizer:
 
     def __init__(self,
-                 map_data: List[List[str]],
+                 config: Config,
                  solution: Dict[Agent, np.ndarray],
                  step_div=10):
-        self.grid_size_x = len(map_data)
-        self.grid_size_y = len(map_data[0])
-        self.static_obstacles = []
-        for x in range(self.grid_size_x):
-            for y in range(self.grid_size_y):
-                if map_data[x][y] == '@':
-                    self.static_obstacles.append([x, y])
+        self.grid_size_x = config.grid_size_x
+        self.grid_size_y = config.grid_size_y
+        self.static_obstacles = config.static_obstacles
         self.solution = solution
         self.traject: Dict[Agent, np.ndarray] = dict()
         self.step_div = step_div
@@ -97,9 +92,10 @@ class Visualizer:
 
 
 if __name__ == '__main__':
-    from config import ConfigFileLoader
+    from config import Config
+    config = Config()
     config_file = "./config/config.xlsx"
-    config = ConfigFileLoader(config_file)
+    config.load_from_xlsx(config_file)
 
     agent_1 = Agent('1')
     agent_2 = Agent('2')
@@ -107,7 +103,7 @@ if __name__ == '__main__':
     path_2 = np.array([[2, 2], [2, 3], [3, 3], [4, 3], [5, 3]])
     solution = {agent_1: path_1, agent_2: path_2}
 
-    visualizer = Visualizer(config.map, solution)
+    visualizer = Visualizer(config, solution)
     print(visualizer.traject)
     visualizer.plot()
 
