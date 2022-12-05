@@ -1,7 +1,3 @@
 __pycache__/
-fig/
-anim/
 .DS_Store
 ./.idea/
-./config/
-*.xlsx
