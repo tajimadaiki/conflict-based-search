@@ -5,19 +5,22 @@ import math
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
 import matplotlib.patches as patches
+import openpyxl
 
 
 class Visualizer:
 
     def __init__(self,
-                 grid_size_x: int,
-                 grid_size_y: int,
-                 static_obstacles: List[Tuple[int, int]],
+                 map_data: List[List[str]],
                  solution: Dict[Agent, np.ndarray],
                  step_div=10):
-        self.grid_size_x = grid_size_x
-        self.grid_size_y = grid_size_y
-        self.static_obstacles = static_obstacles
+        self.grid_size_x = len(map_data)
+        self.grid_size_y = len(map_data[0])
+        self.static_obstacles = []
+        for x in range(self.grid_size_x):
+            for y in range(self.grid_size_y):
+                if map_data[x][y] == '@':
+                    self.static_obstacles.append([x, y])
         self.solution = solution
         self.traject: Dict[Agent, np.ndarray] = dict()
         self.step_div = step_div
@@ -47,37 +50,44 @@ class Visualizer:
     def plot(self, save=False):
         fig = plt.figure()
         ax = fig.add_subplot(111, aspect=1)
+        ax.invert_yaxis()
 
         def plot_one_step(f):
             # clear pre step artists
             ax.cla()
-            # set lim
-            ax.set_xlim(-1, self.grid_size_x)
-            ax.set_ylim(-1, self.grid_size_y)
+            ax.set_xlim(-1, self.grid_size_y)
+            ax.set_ylim(-1, self.grid_size_x)
+            ax.invert_yaxis()
             # set grid
-            for x in range(self.grid_size_x + 1):
-                ax.plot([x - 0.5, x - 0.5], [0 - 0.5, self.grid_size_y - 0.5], color="black")
-            for y in range(self.grid_size_y + 1):
-                ax.plot([0 - 0.5, self.grid_size_x - 0.5], [y - 0.5, y - 0.5], color="black")
+            for x in range(self.grid_size_y + 1):
+                ax.plot([x - 0.5, x - 0.5], [0 - 0.5, self.grid_size_x - 0.5], color="black")
+            for y in range(self.grid_size_x + 1):
+                ax.plot([0 - 0.5, self.grid_size_y - 0.5], [y - 0.5, y - 0.5], color="black")
             # plot static obstacle
             for obstacle in self.static_obstacles:
-                x = obstacle[0] - 0.5
-                y = obstacle[1] - 0.5
-                r = patches.Rectangle(xy=(x, y), width=1, height=1, color="black")
+                obsy = obstacle[0] - 0.5
+                obsx = obstacle[1] - 0.5
+                r = patches.Rectangle(xy=(obsx, obsy), width=1, height=1, color="black")
                 ax.add_patch(r)
             # plot agents
             for agent, pos in self.traject.items():
-                # plot agents
+                # plot agents            
                 if f < len(pos):
-                    c = patches.Circle(xy=(pos[f][0], pos[f][1]), radius=0.3, color="blue")
-                    cg = patches.Circle(xy=(pos[-1][0], pos[-1][1]), radius=0.3, color="green", alpha=0.4)
-                    ax.text(pos[f][0], pos[f][1], str(agent.id), va="center", ha="center", fontsize=8, color="white")
-                    ax.text(pos[-1][0], pos[-1][1], str(agent.id), va="center", ha="center", fontsize=8, color="white")
+                    posy = pos[f][0]
+                    posx = pos[f][1]
+                    disty = pos[-1][0]
+                    distx = pos[-1][1]
+                    c = patches.Circle(xy=(posx, posy), radius=0.3, color="blue")
+                    cg = patches.Circle(xy=(distx, disty), radius=0.3, color="green", alpha=0.4)
+                    ax.text(posx, posy, str(agent.id), va="center", ha="center", fontsize=8, color="white")
+                    ax.text(posx, posy, str(agent.id), va="center", ha="center", fontsize=8, color="white")
                     ax.add_patch(c)
                     ax.add_patch(cg)
                 else:
-                    c = patches.Circle(xy=(pos[-1][0], pos[-1][1]), radius=0.3, color="red")
-                    ax.text(pos[-1][0], pos[-1][1], str(agent.id), va="center", ha="center", fontsize=8, color="white")
+                    disty = pos[-1][0]
+                    distx = pos[-1][1]
+                    c = patches.Circle(xy=(distx, disty), radius=0.3, color="red")
+                    ax.text(distx, disty, str(agent.id), va="center", ha="center", fontsize=8, color="white")
                     ax.add_patch(c)
         interval_time = 1000/self.step_div
         anim = FuncAnimation(fig, plot_one_step, frames=self.traj_steps, interval=interval_time)
@@ -87,16 +97,17 @@ class Visualizer:
 
 
 if __name__ == '__main__':
-    agent_1 = Agent(1)
-    agent_2 = Agent(2)
-    grid_size_x = 15
-    grid_size_y = 10
-    static_obstacles = [(5, 5), (5, 6), (5, 7), (5, 8), (5, 9)]
+    from config_file_loader import ConfigFileLoader
+    config_file = "./config/config.xlsx"
+    config = ConfigFileLoader(config_file)
+
+    agent_1 = Agent('1')
+    agent_2 = Agent('2')
     path_1 = np.array([[1, 2], [2, 2], [3, 2], [3, 3]])
     path_2 = np.array([[2, 2], [2, 3], [3, 3], [4, 3], [5, 3]])
     solution = {agent_1: path_1, agent_2: path_2}
 
-    visualizer = Visualizer(grid_size_x, grid_size_y, static_obstacles, solution)
+    visualizer = Visualizer(config.map, solution)
     print(visualizer.traject)
     visualizer.plot()
 

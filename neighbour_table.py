@@ -1,42 +1,57 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 import numpy as np
-
+from typing import Dict
 
 class NeighbourTable:
 
-    directions_k2 = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]
-    directions_k3 = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
-
     def __init__(self,
-                 grid_size_x: int,
-                 grid_size_y: int,
-                 static_obstacles: List[Tuple[int, int]],
-                 k: int = 2):
-        # set 2^k neighborhood movement
-        directions = []
-        if k == 2: directions = self.directions_k2
-        if k == 3: directions = self.directions_k3
+                 map_data: List[List[str]]):
+        # load map file
+        self.map = map_data
+        grid_size_x = len(map_data)
+        grid_size_y = len(map_data[0])
         # create neighbours table
-        table = dict()
-        for i in range(grid_size_x):
-            for j in range(grid_size_y):
+        self.neighbours_table: Dict[Tuple[int,int]: str] = dict()
+        for x in range(grid_size_x):
+            for y in range(grid_size_y):
+                directions = []
                 neighbours = []
+                value = self.map[x][y]
+                if len(value) == 1:
+                    directions = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]
+                else:
+                    directions.append((0, 0))
+                    for c in value[1:]:
+                        if c == 'r': directions.append((0, -1))
+                        if c == 'u': directions.append((-1, 0))
+                        if c == 'l': directions.append((0, 1))
+                        if c == 'd': directions.append((1, 0))
+                
                 for dx, dy in directions:
-                    x = i + dx
-                    y = j + dy
-                    if 0 <= x < grid_size_x and \
-                            0 <= y < grid_size_y and \
-                            not ((x, y) in static_obstacles):
-                        neighbours.append(np.array([x, y]))
-                table[(i, j)] = np.array(neighbours)
-        self.table = table
+                    nx = x+ dx
+                    ny = y + dy
+                    if 0 <= nx < grid_size_x and 0 <= ny < grid_size_y:
+                        if not (self.map[nx][ny] == '@'):
+                            neighbours.append(np.array([nx, ny]))
+                self.neighbours_table[(x, y)] = np.array(neighbours)             
 
     def neighbours(self, pos: np.ndarray) -> np.ndarray:
-        return self.table[tuple(pos)]
+        return self.neighbours_table[tuple(pos)]
+    
+    def is_obstacle(self, pos: np.ndarray) -> bool:
+        x = pos[0]
+        y = pos[1]
+        return self.map[x][y] == '@'
 
 
 if __name__ == "__main__":
-    obstacles = [(3, 4), (5, 5), (9, 2)]
-    neighbour = NeighbourTable(10, 15, obstacles)
-    pos44 = np.array([4, 4])
-    print(neighbour.neighbours(pos44))
+    # import config file loader
+    from config_file_loader import ConfigFileLoader
+    config_file = "./config/config.xlsx"
+    config = ConfigFileLoader(config_file)
+    neighbour_table = NeighbourTable(config.map)
+    print(neighbour_table.map[12][4])
+    pos1 = np.array([24, 35])
+    pos2 = np.array([4, 3])
+    print(neighbour_table.neighbours(pos1))
+    print(neighbour_table.is_obstacle(pos2))
