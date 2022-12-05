@@ -129,7 +129,7 @@ class AStar:
 
 
 if __name__ == "__main__":
-    from config_file_loader import Config
+    from config import Config
     config_file = "./config/config.xlsx"
     config = Config(config_file)
     planner = AStar(config.map)

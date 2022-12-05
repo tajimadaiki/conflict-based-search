@@ -97,7 +97,7 @@ class Visualizer:
 
 
 if __name__ == '__main__':
-    from config_file_loader import ConfigFileLoader
+    from config import ConfigFileLoader
     config_file = "./config/config.xlsx"
     config = ConfigFileLoader(config_file)
 

@@ -46,7 +46,7 @@ class NeighbourTable:
 
 if __name__ == "__main__":
     # import config file loader
-    from config_file_loader import Config
+    from config import Config
     config_file = "./config/config.xlsx"
     config = Config(config_file)
     neighbour_table = NeighbourTable(config.map)

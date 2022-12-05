@@ -2,7 +2,7 @@ import time
 from agent import Agent
 from conflict_based_search import ConflictBasedSearch
 from visualizer import Visualizer
-from config_file_loader import Config
+from config import Config
 
 
 def main():
