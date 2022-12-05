@@ -68,8 +68,9 @@ class Heuristic:
 
 if __name__ == "__main__":
     from config import Config
+    config = Config()
     config_file = "./config/config.xlsx"
-    config = Config(config_file)
+    config.load_from_xlsx(config_file)
     h = Heuristic(config.map)
     print(h.neighbour_table.map[11][0], h.neighbour_table.map[12][4])
     print(h.single_shortest_path(np.array([11, 0]), np.array([12, 4])))

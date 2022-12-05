@@ -47,8 +47,9 @@ class NeighbourTable:
 if __name__ == "__main__":
     # import config file loader
     from config import Config
+    config = Config()
     config_file = "./config/config.xlsx"
-    config = Config(config_file)
+    config.load_from_xlsx(config_file)
     neighbour_table = NeighbourTable(config.map)
     print(neighbour_table.map[12][4])
     pos1 = np.array([24, 35])

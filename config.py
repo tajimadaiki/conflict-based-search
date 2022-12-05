@@ -3,14 +3,18 @@ from typing import List
 from agent import Agent
 
 class Config:
-    def __init__(self,
-                 config_file: str):
-        self._wb = openpyxl.load_workbook(config_file)
+    def __init__(self):
         self.agents: List[Agent] = []
         self.map: List[List[str]] = []
         self.static_obstacles = []
         self.endpoints = dict()
         self.chargers = dict()
+        self.grid_size_x = int()
+        self.grid_size_y = int()
+        
+    
+    def load_from_xlsx(self, config_file: str):
+        self._wb = openpyxl.load_workbook(config_file)
         self._load_agent()
         self._load_map() 
     
@@ -49,7 +53,8 @@ class Config:
 
 
 if __name__ == "__main__":
+    config = Config()
     config_file = "./config/config.xlsx"
-    config = Config(config_file)
+    config.load_from_xlsx(config_file)
     print(config.agents)
     print(config.endpoints)

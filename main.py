@@ -8,8 +8,9 @@ from config import Config
 def main():
     start_time = time.time()
 
+    config = Config()
     config_file = "./config/config.xlsx"
-    config = Config(config_file)
+    config.load_from_xlsx(config_file)
 
     planner = ConflictBasedSearch(config)
     intermediate_time = time.time()

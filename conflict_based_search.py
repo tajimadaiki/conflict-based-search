@@ -64,8 +64,9 @@ class ConflictBasedSearch:
 
 if __name__ == "__main__":
     from config import Config
+    config = Config()
     config_file = "./config/config.xlsx"
-    config = Config(config_file)
+    config.load_from_xlsx(config_file)
 
     planner = ConflictBasedSearch(config)
     print("create planner!")
