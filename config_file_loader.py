@@ -2,7 +2,7 @@ import openpyxl
 from typing import List
 from agent import Agent
 
-class ConfigFileLoader:
+class Config:
     def __init__(self,
                  config_file: str):
         self._wb = openpyxl.load_workbook(config_file)
@@ -50,6 +50,6 @@ class ConfigFileLoader:
 
 if __name__ == "__main__":
     config_file = "./config/config.xlsx"
-    config = ConfigFileLoader(config_file)
+    config = Config(config_file)
     print(config.agents)
     print(config.endpoints)

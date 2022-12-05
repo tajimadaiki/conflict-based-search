@@ -2,14 +2,14 @@ import time
 from agent import Agent
 from conflict_based_search import ConflictBasedSearch
 from visualizer import Visualizer
-from config_file_loader import ConfigFileLoader
+from config_file_loader import Config
 
 
 def main():
     start_time = time.time()
 
     config_file = "./config/config.xlsx"
-    config = ConfigFileLoader(config_file)
+    config = Config(config_file)
 
     planner = ConflictBasedSearch(config.agents, config.map)
     intermediate_time = time.time()

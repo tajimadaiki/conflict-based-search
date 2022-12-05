@@ -129,8 +129,8 @@ class AStar:
 
 
 if __name__ == "__main__":
-    from config_file_loader import ConfigFileLoader
+    from config_file_loader import Config
     config_file = "./config/config.xlsx"
-    config = ConfigFileLoader(config_file)
+    config = Config(config_file)
     planner = AStar(config.map)
     print(planner.plan((11, 0), (12, 4), constraints_on_node={3: {(3, 2), (2, 7)}, 4: {(3, 7)}}))
