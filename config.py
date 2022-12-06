@@ -5,6 +5,7 @@ from agent import Agent
 class Config:
     def __init__(self):
         self.agents: List[Agent] = []
+        self.agents_ags = dict()
         self.map: List[List[str]] = []
         self.static_obstacles = []
         self.endpoints = dict()
@@ -12,21 +13,29 @@ class Config:
         self.grid_size_x = int()
         self.grid_size_y = int()
         
-    
     def load_from_xlsx(self, config_file: str):
         self._wb = openpyxl.load_workbook(config_file)
         self._load_agent()
         self._load_map() 
     
+    # load work sheet 'agents'
     def _load_agent(self):
         agents_ws = self._wb['agents']
-        for row in range(2, agents_ws.max_row + 1):
+        keys = dict()
+        for row in range(1, agents_ws.max_row + 1):
             for col in range(1, agents_ws.max_column + 1):
-                id = str(agents_ws.cell(row, col).value)
-                if col == 1:
-                    agent = Agent(id)
-                    self.agents.append(agent)
+                if row == 1:
+                    key = str(agents_ws.cell(row, col).value)
+                    self.agents_ags[key] = []
+                    keys[col] = key
+                else:
+                    value = str(agents_ws.cell(row, col).value)
+                    self.agents_ags[keys[col]].append(value)
+                    if keys[col] == 'id': 
+                        agent = Agent(value)
+                        self.agents.append(agent)
 
+    # load work sheet 'map' and 'name'
     def _load_map(self):
         map_ws = self._wb['map']
         name_ws = self._wb['name']
@@ -57,4 +66,5 @@ if __name__ == "__main__":
     config_file = "./config/config.xlsx"
     config.load_from_xlsx(config_file)
     print(config.agents)
-    print(config.endpoints)
+    print(config.agents_ags)
+
