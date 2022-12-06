@@ -6,6 +6,7 @@ class Config:
     def __init__(self):
         self.agents: List[Agent] = []
         self.agents_ags = dict()
+        self.agent_num = int()
         self.map: List[List[str]] = []
         self.static_obstacles = []
         self.endpoints = dict()
@@ -22,6 +23,7 @@ class Config:
     def _load_agent(self):
         agents_ws = self._wb['agents']
         keys = dict()
+        self.agent_num = agents_ws.max_row - 1
         for row in range(1, agents_ws.max_row + 1):
             for col in range(1, agents_ws.max_column + 1):
                 if row == 1:
@@ -66,5 +68,6 @@ if __name__ == "__main__":
     config_file = "./config/config.xlsx"
     config.load_from_xlsx(config_file)
     print(config.agents)
+    print(config.agent_num)
     print(config.agents_ags)
 
