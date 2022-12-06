@@ -22,6 +22,7 @@ class Config:
     # load work sheet 'agents'
     def _load_agent(self):
         agents_ws = self._wb['agents']
+        map_ws = self._wb['map']
         keys = dict()
         self.agent_num = agents_ws.max_row - 1
         for row in range(1, agents_ws.max_row + 1):
@@ -36,6 +37,10 @@ class Config:
                     if keys[col] == 'id': 
                         agent = Agent(value)
                         self.agents.append(agent)
+                    if keys[col] == 'init_pos':
+                        x = map_ws[value].row - 1
+                        y = map_ws[value].column - 1
+                        print(x, y)
 
     # load work sheet 'map' and 'name'
     def _load_map(self):
