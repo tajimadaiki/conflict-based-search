@@ -7,6 +7,7 @@ class Config:
         self.agents: List[Agent] = []
         self.agents_ags = dict()
         self.agent_num = int()
+        self.init_pos = dict() # agent_id: (x, y)
         self.map: List[List[str]] = []
         self.static_obstacles = []
         self.endpoints = dict()
@@ -26,6 +27,7 @@ class Config:
         keys = dict()
         self.agent_num = agents_ws.max_row - 1
         for row in range(1, agents_ws.max_row + 1):
+            agent_id = ''
             for col in range(1, agents_ws.max_column + 1):
                 if row == 1:
                     key = str(agents_ws.cell(row, col).value)
@@ -35,12 +37,13 @@ class Config:
                     value = str(agents_ws.cell(row, col).value)
                     self.agents_ags[keys[col]].append(value)
                     if keys[col] == 'id': 
-                        agent = Agent(value)
+                        agent_id = value
+                        agent = Agent(agent_id)
                         self.agents.append(agent)
                     if keys[col] == 'init_pos':
                         x = map_ws[value].row - 1
                         y = map_ws[value].column - 1
-                        print(x, y)
+                        self.init_pos[agent_id] = (x, y)
 
     # load work sheet 'map' and 'name'
     def _load_map(self):
@@ -75,4 +78,5 @@ if __name__ == "__main__":
     print(config.agents)
     print(config.agent_num)
     print(config.agents_ags)
+    print(config.init_pos)
 
