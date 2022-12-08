@@ -12,9 +12,10 @@ import time
 class ConflictBasedSearch:
 
     def __init__(self,
-                 config: Config):
-        self.agents = config.agents
-        self.low_level_planner = AStar(config.map)
+                 agents: List[Agent],
+                 map_data: List[List[str]]):
+        self.agents = agents
+        self.low_level_planner = AStar(map_data)
 
     def plan(self,
              starts: Dict[Agent, Tuple[int, int]],
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     config_file = "./config/config.xlsx"
     config.load_from_xlsx(config_file)
 
-    planner = ConflictBasedSearch(config)
+    planner = ConflictBasedSearch(config.agents, config.map)
     print("create planner!")
 
     starts = {config.agents[0]: (11, 0), config.agents[1]: (17, 4)}

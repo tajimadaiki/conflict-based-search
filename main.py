@@ -12,7 +12,7 @@ def main():
     config_file = "./config/config.xlsx"
     config.load_from_xlsx(config_file)
 
-    planner = ConflictBasedSearch(config)
+    planner = ConflictBasedSearch(config.agents, config.map)
     intermediate_time = time.time()
     print(f"create planner: {intermediate_time - start_time}")
 
