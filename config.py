@@ -5,8 +5,8 @@ from agent import Agent
 class Config:
     def __init__(self):
         self.agents: List[Agent] = []
-        self.agents_ags = dict()
-        self.agent_num = int()
+        self.agents_num = int()
+        self.agents_id: List[str] = []
         self.init_pos = dict() # agent_id: (x, y)
         self.map: List[List[str]] = []
         self.static_obstacles = []
@@ -25,19 +25,18 @@ class Config:
         agents_ws = self._wb['agents']
         map_ws = self._wb['map']
         keys = dict()
-        self.agent_num = agents_ws.max_row - 1
+        self.agents_num = agents_ws.max_row - 1
         for row in range(1, agents_ws.max_row + 1):
             agent_id = ''
             for col in range(1, agents_ws.max_column + 1):
                 if row == 1:
                     key = str(agents_ws.cell(row, col).value)
-                    self.agents_ags[key] = []
                     keys[col] = key
                 else:
                     value = str(agents_ws.cell(row, col).value)
-                    self.agents_ags[keys[col]].append(value)
                     if keys[col] == 'id': 
                         agent_id = value
+                        self.agents_id.append(agent_id)
                         agent = Agent(agent_id)
                         self.agents.append(agent)
                     if keys[col] == 'init_pos':
@@ -76,7 +75,7 @@ if __name__ == "__main__":
     config_file = "./config/config.xlsx"
     config.load_from_xlsx(config_file)
     print(config.agents)
-    print(config.agent_num)
-    print(config.agents_ags)
+    print(config.agents_num)
+    print(config.agents_id)
     print(config.init_pos['1'])
 
