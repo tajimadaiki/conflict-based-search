@@ -78,5 +78,5 @@ if __name__ == "__main__":
     print(config.agents)
     print(config.agent_num)
     print(config.agents_ags)
-    print(config.init_pos)
+    print(config.init_pos['1'])
 
