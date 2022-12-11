@@ -77,5 +77,7 @@ if __name__ == "__main__":
     print(config.agents)
     print(config.agents_num)
     print(config.agents_id)
+    print(config.endpoints)
+    print(config.chargers)
     print(config.init_pos['1'])
 

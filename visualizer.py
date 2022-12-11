@@ -16,6 +16,8 @@ class Visualizer:
         self.grid_size_x = config.grid_size_x
         self.grid_size_y = config.grid_size_y
         self.static_obstacles = config.static_obstacles
+        self.endpoints = config.endpoints
+        self.chargers = config.chargers
         self.solution = solution
         self.traject: Dict[Agent, np.ndarray] = dict()
         self.step_div = step_div
@@ -63,6 +65,18 @@ class Visualizer:
                 obsy = obstacle[0] - 0.5
                 obsx = obstacle[1] - 0.5
                 r = patches.Rectangle(xy=(obsx, obsy), width=1, height=1, color="black")
+                ax.add_patch(r)
+            # plot endpoints
+            for endpoint in self.endpoints.values():
+                epy = endpoint[0] - 0.5
+                epx = endpoint[1] - 0.5
+                r = patches.Rectangle(xy=(epx, epy), width=1, height=1, color="skyblue")
+                ax.add_patch(r)
+            # plot chargers
+            for charger in self.chargers.values():
+                chy = charger[0] - 0.5
+                chx = charger[1] - 0.5
+                r = patches.Rectangle(xy=(chx, chy), width=1, height=1, color="gold")
                 ax.add_patch(r)
             # plot agents
             for agent, pos in self.traject.items():
