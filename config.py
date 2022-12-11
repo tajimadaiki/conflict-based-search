@@ -60,13 +60,13 @@ class Config:
                 name = name_ws.cell(row, col).value
                 # record static obstacles
                 if map_ws.cell(row, col).value == '@':
-                    self.static_obstacles.append([x, y])
+                    self.static_obstacles.append((x, y))
                 # record endpoints
                 if map_ws.cell(row, col).value[0] == 'e':
-                    self.endpoints[name] = [x, y]
+                    self.endpoints[name] = (x, y)
                 # record chargers
                 if map_ws.cell(row, col).value[0] == 'c':
-                    self.chargers[name] = [x, y]
+                    self.chargers[name] = (x, y)
             self.map.append(map_row)
 
 
