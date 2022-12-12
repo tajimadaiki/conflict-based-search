@@ -22,9 +22,9 @@ class NeighbourTable:
                 else:
                     directions.append((0, 0))
                     for c in value[1:]:
-                        if c == 'r': directions.append((0, -1))
+                        if c == 'r': directions.append((0, 1))
                         if c == 'u': directions.append((-1, 0))
-                        if c == 'l': directions.append((0, 1))
+                        if c == 'l': directions.append((0, -1))
                         if c == 'd': directions.append((1, 0))
                 
                 for dx, dy in directions:
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     config.load_from_xlsx(config_file)
     neighbour_table = NeighbourTable(config.map)
     print(neighbour_table.map[12][4])
-    pos1 = np.array([24, 35])
-    pos2 = np.array([4, 3])
+    pos1 = np.array([12, 6])
+    pos2 = np.array([6, 27])
     print(neighbour_table.neighbours(pos1))
-    print(neighbour_table.is_obstacle(pos2))
+    print(neighbour_table.neighbours(pos2))
