@@ -44,7 +44,7 @@ class Visualizer:
                     traj_y = np.append(traj_y, i_pos[1])
             self.traject[agent] = np.stack([traj_x, traj_y], 1)
 
-    def plot(self, save=False):
+    def plot(self, save=False, name="anim.mp4", speed=1.0):
         fig = plt.figure()
         ax = fig.add_subplot(111, aspect=1)
         ax.invert_yaxis()
@@ -98,10 +98,11 @@ class Visualizer:
                     c = patches.Circle(xy=(distx, disty), radius=0.3, color="red")
                     ax.text(distx, disty, str(agent.id), va="center", ha="center", fontsize=8, color="white")
                     ax.add_patch(c)
-        interval_time = 1000/self.step_div
+        interval_time = 1000/self.step_div/speed
         anim = FuncAnimation(fig, plot_one_step, frames=self.traj_steps, interval=interval_time)
         if save:
-            anim.save('./anim/anim.mp4', writer="ffmpeg")
+            file_name = './anim/' + name
+            anim.save(file_name, writer="ffmpeg")
         plt.show()
 
 

@@ -27,7 +27,7 @@ def main():
     print(f"calculate solution: {end_time - intermediate_time}")
 
     visualizer = Visualizer(config, solution)
-    visualizer.plot()
+    visualizer.plot(True, 'kamigo_1')
 
 
 if __name__ == "__main__":
