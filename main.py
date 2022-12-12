@@ -16,8 +16,8 @@ def main():
     intermediate_time = time.time()
     print(f"create planner: {intermediate_time - start_time}")
 
-    starts = {config.agents[0]: (11, 0), config.agents[1]: (17, 4)}
-    goals = {config.agents[0]: (16, 4), config.agents[1]: (17, 6)}
+    starts = {config.agents[0]: (5, 5), config.agents[1]: config.chargers['charger_2']}
+    goals = {config.agents[0]: config.endpoints['con_6_6'], config.agents[1]: config.endpoints['con_6_2']}
     print(f'starts: {starts}')
     print(f'goals: {goals}')
 

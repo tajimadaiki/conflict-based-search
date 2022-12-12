@@ -27,7 +27,10 @@ class ConflictBasedSearch:
         for agent in self.agents:
             path = self.low_level_planner.plan(starts[agent], goals[agent])
             solution[agent] = path
+            # デバッグ
+            print(f'{agent}: {path}')
         constraints = Constraints()
+        print('create CT node!')
         node = CTNode(constraints,
                       solution,
                       self.low_level_planner,
@@ -39,6 +42,8 @@ class ConflictBasedSearch:
 
         start_time = time.time()
         # start iteration
+        # デバッグ
+        print('start iteration!')
         while open_nodes:
             current_time = time.time()
             if current_time - start_time > 10:
@@ -72,8 +77,8 @@ if __name__ == "__main__":
     planner = ConflictBasedSearch(config.agents, config.map)
     print("create planner!")
 
-    starts = {config.agents[0]: (11, 0), config.agents[1]: (17, 4)}
-    goals = {config.agents[0]: (16, 4), config.agents[1]: (17, 6)}
+    starts = {config.agents[0]: (6, 27), config.agents[1]: (12, 6)}
+    goals = {config.agents[0]: (11, 1), config.agents[1]: (12, 4)}
 
     solution = planner.plan(starts, goals, True)
 

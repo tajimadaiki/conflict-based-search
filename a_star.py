@@ -134,4 +134,4 @@ if __name__ == "__main__":
     config_file = "./config/config.xlsx"
     config.load_from_xlsx(config_file)
     planner = AStar(config.map)
-    print(planner.plan((11, 0), (12, 4), constraints_on_node={3: {(3, 2), (2, 7)}, 4: {(3, 7)}}))
+    print(planner.plan((12, 4), (12, 6), constraints_on_node={3: {(3, 2), (2, 7)}, 4: {(3, 7)}}))
