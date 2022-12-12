@@ -102,7 +102,7 @@ class Visualizer:
         anim = FuncAnimation(fig, plot_one_step, frames=self.traj_steps, interval=interval_time)
         if save:
             file_name = './anim/' + name
-            anim.save(file_name, writer="ffmpeg")
+            anim.save(file_name, writer="imagemagick")
         plt.show()
 
 
