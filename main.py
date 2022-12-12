@@ -27,7 +27,7 @@ def main():
     print(f"calculate solution: {end_time - intermediate_time}")
 
     visualizer = Visualizer(config, solution)
-    visualizer.plot(save=True, name='kamigo_1.gif', speed=2.0)
+    visualizer.plot(save=False, name='anim.mp4', speed=2.0)
 
 
 if __name__ == "__main__":

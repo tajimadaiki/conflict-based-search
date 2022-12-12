@@ -89,7 +89,7 @@ class Visualizer:
                     c = patches.Circle(xy=(posx, posy), radius=0.3, color="blue")
                     cg = patches.Circle(xy=(distx, disty), radius=0.3, color="green", alpha=0.4)
                     ax.text(posx, posy, str(agent.id), va="center", ha="center", fontsize=8, color="white")
-                    ax.text(posx, posy, str(agent.id), va="center", ha="center", fontsize=8, color="white")
+                    ax.text(distx, disty, str(agent.id), va="center", ha="center", fontsize=8, color="white")
                     ax.add_patch(c)
                     ax.add_patch(cg)
                 else:
