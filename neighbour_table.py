@@ -20,8 +20,8 @@ class NeighbourTable:
                 if len(value) == 1:
                     directions = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]
                 else:
-                    directions.append((0, 0))
                     for c in value[1:]:
+                        if c == 's': directions.append((0, 0))
                         if c == 'r': directions.append((0, 1))
                         if c == 'u': directions.append((-1, 0))
                         if c == 'l': directions.append((0, -1))
