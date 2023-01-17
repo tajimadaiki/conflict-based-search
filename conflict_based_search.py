@@ -28,7 +28,7 @@ class ConflictBasedSearch:
             path = self.low_level_planner.plan(starts[agent], goals[agent])
             solution[agent] = path
         constraints = Constraints()
-        print('create CT node!')
+        print('create initial CT node!')
         node = CTNode(constraints,
                       solution,
                       self.low_level_planner,
