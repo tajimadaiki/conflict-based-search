@@ -108,9 +108,8 @@ class Visualizer:
 
 if __name__ == '__main__':
     from config import Config
-    config = Config()
     config_file = "./config/config.xlsx"
-    config.load_from_xlsx(config_file)
+    config = Config(config_file)
 
     agent_1 = Agent('1')
     agent_2 = Agent('2')
